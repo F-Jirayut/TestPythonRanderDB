@@ -1,7 +1,9 @@
 import psycopg2
 from fastapi import FastAPI
-
+from fastapi_utils.tasks import repeat_every
 app = FastAPI()
+test = 1
+
 @app.get("/")
 def read_root():
     try:
@@ -17,3 +19,11 @@ def read_root():
         print ("Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
         return error
+
+@app.on_event("startup")
+@repeat_every(seconds=5)
+def remove_expired_tokens_task() -> None:
+    global test
+    test = test + 1
+    print(test)
+    return {"count" : test}
