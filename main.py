@@ -26,4 +26,7 @@ def remove_expired_tokens_task() -> None:
     global test
     test = test + 1
     print(test)
+
+@app.get("/count")
+def get_count():
     return {"count" : test}
